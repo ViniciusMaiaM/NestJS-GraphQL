@@ -2,8 +2,9 @@ import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { UserResolver } from './graphql/resolver/user.resolver';
 import { UserModule } from './user/user.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { PostsModule } from './posts/posts.module';
 
 @Module({
   imports: [
@@ -11,9 +12,22 @@ import { UserModule } from './user/user.module';
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
     }),
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      // Where the database is running
+      host: process.env.DB_HOST || 'db',
+      port: 5432,
+      password: 'postgres',
+      username: 'postgres',
+      // Where the entities are goint to be found
+      // Automatically sincronizes databases schema
+      entities: ['dist/**/*.entity{.ts,.js}'],
+      synchronize: true,
+    }),
     UserModule,
+    PostsModule,
   ],
   controllers: [],
-  providers: [UserResolver],
+  providers: [],
 })
 export class AppModule {}
