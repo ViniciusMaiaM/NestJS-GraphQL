@@ -2,22 +2,50 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Post {
+  id: Int!
+  title: String!
+  content: String!
+  userId: Int!
+  user: UserEntity!
+}
+
 type UserEntity {
-  id: String!
+  id: Int!
   name: String!
   email: String!
   password: String!
+  posts: [Post!]
 }
 
 type Query {
+  getUser(id: Int!): UserEntity!
   users: [UserEntity!]!
+  posts: [Post!]!
+  post(id: Int!): Post!
 }
 
 type Mutation {
-  createUser(data: CreateUserInput!): String!
+  createUser(createUserInput: CreateUserInput!): UserEntity!
+  createPost(createPostInput: CreatePostInput!): Post!
+  updatePost(id: Int!, updatePostInput: UpdatePostInput!): Post!
+  removePost(id: Int!): Post!
 }
 
 input CreateUserInput {
   name: String!
   email: String!
+  password: String!
+}
+
+input CreatePostInput {
+  title: String!
+  content: String!
+  userId: Int!
+}
+
+input UpdatePostInput {
+  title: String!
+  content: String!
+  userId: Int
 }
