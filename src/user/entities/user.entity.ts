@@ -13,7 +13,7 @@ export class UserEntity {
   @Field()
   name: string;
 
-  @Column()
+  @Column({ unique: true })
   @Field()
   email: string;
 
@@ -21,7 +21,7 @@ export class UserEntity {
   @Field()
   password: string;
 
-  @OneToMany(() => Post, (post) => post.user)
+  @OneToMany(() => Post, (post) => post.user, { eager: true })
   @Field(() => [Post], { nullable: true })
   posts?: Post[];
 }
