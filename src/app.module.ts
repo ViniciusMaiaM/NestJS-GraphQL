@@ -5,12 +5,22 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PostsModule } from './posts/posts.module';
+import { GraphQLError, GraphQLFormattedError } from 'graphql';
 
 @Module({
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      formatError: (error: GraphQLError) => {
+        const extensions = error.extensions as Record<string, any>;
+        const exception = extensions?.exception as Record<string, any>;
+
+        const graphQLFormattedError: GraphQLFormattedError = {
+          message: exception?.response?.message || error.message,
+        };
+        return graphQLFormattedError;
+      },
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
