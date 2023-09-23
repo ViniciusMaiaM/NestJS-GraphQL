@@ -14,11 +14,7 @@ export class PostsService {
     private userService: UserService,
   ) {}
   async create(createPostInput: CreatePostInput) {
-    const user = await this.getUser(createPostInput.userId);
-    const newPost = this.postRepository.create({
-      ...createPostInput,
-      user: user,
-    });
+    const newPost = this.postRepository.create(createPostInput);
 
     return this.postRepository.save(newPost);
   }
