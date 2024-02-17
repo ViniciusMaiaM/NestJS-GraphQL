@@ -6,19 +6,19 @@ import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PostsModule } from './posts/posts.module';
 import { GraphQLError, GraphQLFormattedError } from 'graphql';
-import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      context: ({ req }) => ({ headers: req.headers }),
       formatError: (error: GraphQLError) => {
         const extensions = error.extensions as Record<string, any>;
         const exception = extensions?.exception as Record<string, any>;
 
         const graphQLFormattedError: GraphQLFormattedError = {
-          message: exception?.response?.message || error.message,
+          message: exception.response.message || error.message,
         };
         return graphQLFormattedError;
       },
@@ -37,7 +37,6 @@ import { AuthModule } from './auth/auth.module';
     }),
     UserModule,
     PostsModule,
-    AuthModule,
   ],
   controllers: [],
   providers: [],
