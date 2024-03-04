@@ -6,6 +6,7 @@ import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PostsModule } from './posts/posts.module';
 import { GraphQLError, GraphQLFormattedError } from 'graphql';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { GraphQLError, GraphQLFormattedError } from 'graphql';
     }),
     UserModule,
     PostsModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],
