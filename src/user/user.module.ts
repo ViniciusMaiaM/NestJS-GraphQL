@@ -8,6 +8,6 @@ import { UserEntity } from './entities/user.entity';
   // This imports tells the TypeOrm to make the UserEntity available for use within this module
   imports: [TypeOrmModule.forFeature([UserEntity])],
   providers: [UserService, UserResolver],
-  exports: [UserService],
+  exports: [UserService, UserModule],
 })
 export class UserModule {}
