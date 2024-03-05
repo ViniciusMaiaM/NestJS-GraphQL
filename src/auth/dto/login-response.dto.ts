@@ -9,6 +9,5 @@ export class LoginResponse {
   access_token: string;
 
   @Field(() => UserEntity)
-  @IsString()
   user: UserEntity;
 }
